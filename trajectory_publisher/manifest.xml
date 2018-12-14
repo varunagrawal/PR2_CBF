@@ -1,0 +1,17 @@
+<package>
+  <description brief="trajectory_publisher">
+
+     trajectory_publisher
+
+  </description>
+  <author>varun</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/trajectory_publisher</url>
+  <depend package="actionlib"/>
+  <depend package="roscpp"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+
