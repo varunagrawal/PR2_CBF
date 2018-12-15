@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(pr2_forward_kinematics_server)
+project(pr2_server)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -13,10 +13,12 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   pr2_controllers_msgs
   roscpp
+  message_generation
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -56,11 +58,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  Jacobian.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -70,10 +71,12 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   pr2_controllers_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  pr2_controllers_msgs
+  sensor_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,10 +108,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES pr2_forward_kinematics_server
-#  CATKIN_DEPENDS actionlib moveit_core moveit_ros_planning_interface pr2_controllers_msgs roscpp
-#  DEPENDS system_lib
+  INCLUDE_DIRS include
+  LIBRARIES pr2_server
+  CATKIN_DEPENDS actionlib moveit_core moveit_ros_planning_interface pr2_controllers_msgs roscpp
+  DEPENDS system_lib
 )
 
 ###########
@@ -124,7 +127,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/pr2_forward_kinematics_server.cpp
+#   src/${PROJECT_NAME}/pr2_server.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -135,7 +138,11 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME} src/pr2_forward_kinematics_server.cpp)
+add_executable(pr2_fk_server src/pr2_fk_server.cpp)
+add_executable(pr2_fk_client src/pr2_fk_client.cpp)
+
+add_executable(pr2_jacobian_server src/pr2_jacobian_server.cpp)
+add_executable(pr2_jacobian_client src/pr2_jacobian_client.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,12 +152,26 @@ add_executable(${PROJECT_NAME} src/pr2_forward_kinematics_server.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(pr2_fk_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(pr2_fk_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_dependencies(pr2_jacobian_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(pr2_jacobian_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(pr2_fk_server
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(pr2_fk_client
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(pr2_jacobian_server
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(pr2_jacobian_client
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -192,7 +213,7 @@ add_executable(${PROJECT_NAME} src/pr2_forward_kinematics_server.cpp)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_pr2_forward_kinematics_server.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_pr2_server.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
