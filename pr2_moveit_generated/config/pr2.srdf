@@ -13,10 +13,8 @@
         <joint name="r_shoulder_pan_joint" />
         <joint name="r_shoulder_lift_joint" />
         <joint name="r_upper_arm_roll_joint" />
-        <joint name="r_upper_arm_joint" />
         <joint name="r_elbow_flex_joint" />
         <joint name="r_forearm_roll_joint" />
-        <joint name="r_forearm_joint" />
         <joint name="r_wrist_flex_joint" />
         <joint name="r_wrist_roll_joint" />
     </group>
@@ -37,10 +35,8 @@
         <joint name="l_shoulder_pan_joint" />
         <joint name="l_shoulder_lift_joint" />
         <joint name="l_upper_arm_roll_joint" />
-        <joint name="l_upper_arm_joint" />
         <joint name="l_elbow_flex_joint" />
         <joint name="l_forearm_roll_joint" />
-        <joint name="l_forearm_joint" />
         <joint name="l_wrist_flex_joint" />
         <joint name="l_wrist_roll_joint" />
     </group>

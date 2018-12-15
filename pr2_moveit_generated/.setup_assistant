@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: Varun Agrawal
     author_email: varunagrawal@gatech.edu
-    generated_timestamp: 1544779111
+    generated_timestamp: 1544835567
